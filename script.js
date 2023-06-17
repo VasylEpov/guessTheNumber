@@ -18,21 +18,33 @@
 //     console.log(document.querySelector('.number-input').value);
 // }
 
-const secretNumber = Math.trunc(Math.random() * 20) + 1;
+let secretNumber = Math.trunc(Math.random() * 20) + 1;
 // console.log(secretNumber);
 
 let score = 20;
-
-document.querySelector('.question').textContent = secretNumber;
+let highScore = 0;
 
 document.querySelector('.check').addEventListener('click', function () {
   const guessingNumber = Number(document.querySelector('.number-input').value);
   console.log(typeof guessingNumber);
 
+  // No INPUT
   if (!guessingNumber) {
     document.querySelector('.guess-message').textContent = 'Введіть число';
+
+    // Player WON
   } else if (guessingNumber === secretNumber) {
     document.querySelector('.guess-message').textContent = 'Вірно';
+    document.querySelector('body').style.backgroundColor = 'rgb(9, 250, 21)';
+    document.querySelector('.question').style.width = '50rem';
+    //  Присвоєння числа яка небохдіно відгатати.
+    document.querySelector('.question').textContent = secretNumber;
+
+    if (score > highScore) {
+      highScore = score;
+      document.querySelector('.highscore').textContent = highScore;
+    }
+    // Too HIGH
   } else if (guessingNumber > secretNumber) {
     if (score > 1) {
       document.querySelector('.guess-message').textContent = 'Занадто багато';
@@ -42,6 +54,8 @@ document.querySelector('.check').addEventListener('click', function () {
       document.querySelector('.guess-message').textContent = 'Game over';
       document.querySelector('.score').textContent = 0;
     }
+
+    // Too LOW
   } else if (guessingNumber < secretNumber) {
     if (score > 1) {
       document.querySelector('.guess-message').textContent = 'Занадто мало';
@@ -55,4 +69,16 @@ document.querySelector('.check').addEventListener('click', function () {
     document.querySelector('.guess-message').textContent = 'Game over';
     document.querySelector('.score').textContent = 0;
   }
+});
+
+// Button Restart
+
+document.querySelector('.again').addEventListener('click', function () {
+  secretNumber = Math.trunc(Math.random() * 20) + 1;
+  score = 20;
+  document.querySelector('.question').textContent = '???';
+  document.querySelector('.question').style.width = '25rem';
+  document.querySelector('body').style.backgroundColor = 'rgb(0, 0, 0)';
+  document.querySelector('.score').textContent = score;
+  document.querySelector('.number-input').value = '';
 });
