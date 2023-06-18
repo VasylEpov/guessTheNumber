@@ -23,6 +23,12 @@ let secretNumber = Math.trunc(Math.random() * 20) + 1;
 
 let score = 20;
 let highScore = 0;
+const displayGuessMessage  = function(message) {
+  document.querySelector('.guess-message').textContent = message;
+}
+const showScore= function(message) {
+  document.querySelector('.score').textContent = message;
+}
 
 document.querySelector('.check').addEventListener('click', function () {
   const guessingNumber = Number(document.querySelector('.number-input').value);
@@ -30,11 +36,11 @@ document.querySelector('.check').addEventListener('click', function () {
 
   // No INPUT
   if (!guessingNumber) {
-    document.querySelector('.guess-message').textContent = 'Введіть число';
-
+    // document.querySelector('.guess-message').textContent = 'Введіть число';
+    displayGuessMessage('Введіть число');
     // Player WON
   } else if (guessingNumber === secretNumber) {
-    document.querySelector('.guess-message').textContent = 'Вірно';
+    displayGuessMessage('Вірно');
     document.querySelector('body').style.backgroundColor = 'rgb(9, 250, 21)';
     document.querySelector('.question').style.width = '50rem';
     //  Присвоєння числа яка небохдіно відгатати.
@@ -43,33 +49,46 @@ document.querySelector('.check').addEventListener('click', function () {
     if (score > highScore) {
       highScore = score;
       document.querySelector('.highscore').textContent = highScore;
+    } 
+  } 
+    // Number from input is wrong
+    else if (guessingNumber !== secretNumber) {
+      if (score > 1) {
+        displayGuessMessage(guessingNumber > secretNumber ? 'Занадто багато' : 'Занадто мало') ;
+        score--;
+        document.querySelector('.score').textContent = score;
+      } else {
+        displayGuessMessage('Game over');
+        showScore(0);
+      }
     }
+  });
     // Too HIGH
-  } else if (guessingNumber > secretNumber) {
-    if (score > 1) {
-      document.querySelector('.guess-message').textContent = 'Занадто багато';
-      score--;
-      document.querySelector('.score').textContent = score;
-    } else {
-      document.querySelector('.guess-message').textContent = 'Game over';
-      document.querySelector('.score').textContent = 0;
-    }
-
+    // else if (guessingNumber > secretNumber) {
+    // if (score > 1) {
+    //   document.querySelector('.guess-message').textContent = 'Занадто багато';
+    //   score--;
+    //   document.querySelector('.score').textContent = score;
+    // } else {
+    //   document.querySelector('.guess-message').textContent = 'Game over';
+    //   document.querySelector('.score').textContent = 0;
+    // }
+  // }
     // Too LOW
-  } else if (guessingNumber < secretNumber) {
-    if (score > 1) {
-      document.querySelector('.guess-message').textContent = 'Занадто мало';
-      score--;
-      document.querySelector('.score').textContent = score;
-    }
+    // else if (guessingNumber < secretNumber) {
+    // if (score > 1) {
+    //   document.querySelector('.guess-message').textContent = 'Занадто мало';
+    //   score--;
+    //   document.querySelector('.score').textContent = score;
+    // }
 
     // обов'язково потрібно найти помилку в коді чому не коректно процює програма
     // при перевіці числа яке меньше за відгадуваєме число
-  } else {
-    document.querySelector('.guess-message').textContent = 'Game over';
-    document.querySelector('.score').textContent = 0;
-  }
-});
+//   } else {
+//     document.querySelector('.guess-message').textContent = 'Game over';
+//     document.querySelector('.score').textContent = 0;
+//   }
+// });
 
 // Button Restart
 
@@ -79,6 +98,6 @@ document.querySelector('.again').addEventListener('click', function () {
   document.querySelector('.question').textContent = '???';
   document.querySelector('.question').style.width = '25rem';
   document.querySelector('body').style.backgroundColor = 'rgb(0, 0, 0)';
-  document.querySelector('.score').textContent = score;
+  showScore(score)
   document.querySelector('.number-input').value = '';
 });
